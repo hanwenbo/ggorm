@@ -395,6 +395,26 @@ func TestParams_ConvertToGormConditions(t *testing.T) {
 			want1:   []interface{}{[]interface{}{"LiSi", "ZhangSan", "WangWu"}},
 			wantErr: false,
 		},
+		// ------------------------------ is null is not null -------------------------------------------------
+		{
+			name: "is null",
+			args: args{
+				columns: []Column{
+					{
+						Name:  "name",
+						Exp:   IsNull,
+						Value: nil,
+					},
+					{
+						Name:  "name",
+						Exp:   IsNotNull,
+						Value: nil,
+					},
+				},
+			},
+			want:    "name IS NULL AND name IS NOT NULL",
+			wantErr: false,
+		},
 
 		// ---------------------------- error ----------------------------------------------
 		{

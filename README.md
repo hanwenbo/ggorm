@@ -8,8 +8,8 @@ import "https://github.com/hanwenbo/ggorm/query"
 ### Publish
 
 ```bash
-git tag v1.0.2
-git push origin v1.0.2
+git tag v1.0.4
+git push origin v1.0.4
 ```
 
 ### Install
@@ -19,5 +19,5 @@ go get github.com/hanwenbo/ggorm@lastest
 go get -u github.com/hanwenbo/ggorm@lastest
 
 // or 
-go get -u github.com/hanwenbo/ggorm@v1.0.2
+go get -u github.com/hanwenbo/ggorm@v1.0.4
 ```

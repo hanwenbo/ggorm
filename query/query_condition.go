@@ -43,8 +43,8 @@ var expMap = map[string]string{
 	Lte:       " <= ",
 	Like:      " LIKE ",
 	In:        " IN ",
-	IsNull:    " IS NULL ",
-	IsNotNull: " IS NOT NULL ",
+	IsNull:    " IS NULL",
+	IsNotNull: " IS NOT NULL",
 
 	"=":  " = ",
 	"!=": " <> ",
@@ -169,17 +169,24 @@ func (p *Params) ConvertToGormConditions() (string, []interface{}, error) {
 			return "", nil, err
 		}
 
-		symbol := "?"
-		if column.Exp == " IN " {
-			symbol = "(?)"
-		}
-		if i == l-1 { // ignore the logical type of the last column
-			str += column.Name + column.Exp + symbol
+		if column.Exp == " IS NULL" || column.Exp == " IS NOT NULL" {
+			if i == l-1 { // ignore the logical type of the last column
+				str += column.Name + column.Exp
+			} else {
+				str += column.Name + column.Exp + column.Logic
+			}
 		} else {
-			str += column.Name + column.Exp + symbol + column.Logic
+			symbol := "?"
+			if column.Exp == " IN " {
+				symbol = "(?)"
+			}
+			if i == l-1 { // ignore the logical type of the last column
+				str += column.Name + column.Exp + symbol
+			} else {
+				str += column.Name + column.Exp + symbol + column.Logic
+			}
+			args = append(args, column.Value)
 		}
-		args = append(args, column.Value)
-
 		// when multiple columns are the same, determine whether the use of IN
 		if isUseIN {
 			if field != column.Name {
@@ -190,6 +197,7 @@ func (p *Params) ConvertToGormConditions() (string, []interface{}, error) {
 				isUseIN = false
 			}
 		}
+
 	}
 
 	if isUseIN {
