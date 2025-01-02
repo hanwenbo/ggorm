@@ -23,6 +23,10 @@ const (
 	Like = "like"
 	// In include
 	In = "in"
+	// IsNull is null
+	IsNull = "is null"
+	// IsNotNull is not null
+	IsNotNull = "is not null"
 
 	// AND logic and
 	AND string = "and"
@@ -31,14 +35,16 @@ const (
 )
 
 var expMap = map[string]string{
-	Eq:   " = ",
-	Neq:  " <> ",
-	Gt:   " > ",
-	Gte:  " >= ",
-	Lt:   " < ",
-	Lte:  " <= ",
-	Like: " LIKE ",
-	In:   " IN ",
+	Eq:        " = ",
+	Neq:       " <> ",
+	Gt:        " > ",
+	Gte:       " >= ",
+	Lt:        " < ",
+	Lte:       " <= ",
+	Like:      " LIKE ",
+	In:        " IN ",
+	IsNull:    " IS NULL ",
+	IsNotNull: " IS NOT NULL ",
 
 	"=":  " = ",
 	"!=": " <> ",
@@ -108,6 +114,9 @@ func (c *Column) convert() error {
 				iVal = append(iVal, s)
 			}
 			c.Value = iVal
+		}
+		if c.Exp == " IS NULL " || c.Exp == " IS NOT NULL " {
+			c.Value = nil
 		}
 	} else {
 		return fmt.Errorf("unknown exp type '%s'", c.Exp)
