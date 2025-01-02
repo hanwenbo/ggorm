@@ -87,7 +87,7 @@ func (c *Column) checkValid() error {
 	if c.Name == "" {
 		return fmt.Errorf("field 'name' cannot be empty")
 	}
-	if c.Value == nil {
+	if c.Value == nil && c.Exp != IsNull && c.Exp != IsNotNull {
 		return fmt.Errorf("field 'value' cannot be nil")
 	}
 	return nil
